@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Crea la tua casella di Posta!</title>
+	</head>
+	
+	<script>
+		function Controllo() {
+			let Stampa_finale=document.getElementById("resoconto");
+			let Chek = new Array("Pubblicità","Newsletter","Offerte promozionali");
+			let stringa_check="";
+			let resoconto_errate="";
+			let resoconto_corrette="";
+			let name=document.getElementById("nome");
+			let surname=document.getElementById("cognome");
+			let maschio=document.getElementById("M");
+			let femmina=document.getElementById("F");
+			let Selezione=document.getElementById("selezione");
+			// console.log(name.value);
+			
+			if(!name.value || name.value.length < 2)
+				resoconto_errate+="Nome assente\n";
+			else
+				resoconto_corrette+="Nome: " + name.value + "\n";
+
+			if(!surname.value || surname.value.length <2)
+				resoconto_errate+="Cognome assente\n";
+			else
+				resoconto_corrette+="Cognome: " + surname.value + "\n";
+				
+			if(maschio.checked)
+				resoconto_corrette+="Sesso: maschio";
+			else
+				resoconto_corrette+="Sesso: femmina";
+				
+			resoconto_corrette+="\n";
+			
+			switch(parseInt(Selezione.value,10)) {
+				case 0:
+					resoconto_errate+="Età assente\n";
+					break;
+				case 1:
+					resoconto_corrette+="Età: <30 anni";
+					break;
+				case 2:
+					resoconto_corrette+="Età: 31-50 anni";
+					break;
+				case 3:
+					resoconto_corrette+="Età: >50 anni";
+					break;
+			}		
+			
+			resoconto_corrette+="\n";
+			
+			let ChekBox=document.getElementById("Check4");
+
+			if(ChekBox.checked) {
+				resoconto_corrette+="Sono interessato a ricevere: ";
+				for(let i=0;i<3;i++) {
+					resoconto_corrette += Chek[i] + ", ";
+				}
+				resoconto_corrette = resoconto_corrette.substring(0,resoconto_corrette.length-2);
+			} else {
+				resoconto_corrette += "Sono interessato a ricevere: ";
+				for (let i = 1; i < 4; i++) {
+					let str = "Check" + i;
+					let test = document.getElementById(str);
+					if (test.checked) {
+						resoconto_corrette += Chek[i - 1] + ", ";
+					}
+				}
+				resoconto_corrette = resoconto_corrette.substring(0, resoconto_corrette.length - 2);
+			}
+
+			resoconto_corrette += "\n";
+
+			let username = document.getElementById("userName");
+			//console.log(username.value)
+			if(username.value.length < 5 || !username.value)
+				resoconto_errate += "Username assente\n";
+			else
+				resoconto_corrette += "Username: " + username.value + "\n";
+
+			for(let i=1;i<4;i++) {
+				let domini = document.getElementById("radio" + 1);
+				if(domini.checked)
+				{
+					resoconto_corrette += domini.value;
+					break;
+				}
+			}
+
+			resoconto_corrette += "\n";
+
+			let password = document.getElementById("pass");
+
+			if (password.value.length < 8 || !password.value)
+				resoconto_errate += "Password Assente\n";
+			else
+				resoconto_corrette += "Password: " + password.value + "\n";
+
+			let VerifyPass = document.getElementById("verificaPass");
+
+			if (VerifyPass.value != password.value)
+				resoconto_errate += "Controllo password errato" + "\n";
+
+			let answare = document.getElementById("risposta");
+
+			if(!answare.value) {
+				resoconto_errate += "Inserire la risposta\n";
+			}else {
+				resoconto_corrette += "La risposta alla domanda è " + answare.value + "\n";
+			}			
+
+			let permessi = document.getElementById("no");
+			if(permessi.checked)
+				resoconto_errate += "Autorizzazioni non accettate\n";
+				
+			if(resoconto_errate!=""){
+				resoconto_errate+="Ricontrolla!\n";
+				Stampa_finale.innerText=resoconto_errate;
+			}else
+				Stampa_finale.innerText=resoconto_corrette;
+				
+		}
+
+		function ChangeAll() {
+			let all = document.getElementById("Check4")
+			for(let i=1;i<4;i++){
+				let str = "Check" + i; 
+				let test = document.getElementById(str);
+				test.checked=all.checked;
+			}
+		}
+
+		function ChangeLast(verify) {
+			let all = document.getElementById("Check4")
+			if(!verify) {
+				all.checked = false;
+			}
+
+			let tutti=true;
+
+			for (let i = 1; i < 4; i++) {
+				let str = "Check" + i;
+				let test = document.getElementById(str);
+				if(test.checked == false){
+					tutti = false;
+					break;
+				}
+			}
+
+			if(tutti)
+				all.checked = true;
+		}
+
+		function risposte(val) {
+			let CellaDomanda = document.getElementById("newQuestion");
+			if(val == "3") {
+				CellaDomanda.setAttribute("style","display:block");
+			} else {
+				CellaDomanda.setAttribute("style", "display:none");
+			}
+
+		}
+	</script>
+
+	<body style="font-family:Verdana;font-size:14px;">
+
+		<h1>Crea la tua casella di Posta!</h1>
+		<p>
+			<h2>DATI DELL'UTENTE</h2>
+			<p>
+				<span style="color:red;font-weight:bold;">I campi contrassegnati da * sono obbligatori</span>
+			</p>
+
+			<p>
+				Nome <span style="color:red">*</span>: <input type="text" id="nome"/>
+			</p>
+
+			<p>
+				Cognome <span style="color:red">*</span>: <input type="text" id="cognome"/>
+			</p>
+
+			<p>
+				Sesso:
+				<input type="radio" name="sesso" id="F" checked/> Femminile
+				<input type="radio" name="sesso" id="M"/> Maschile
+			</p>
+
+			<p>
+				Fascia di et&agrave;:
+				<select style="font-family:Verdana;font-size:14px;" id="selezione">
+					<option value="0"> Selezionare
+					<option value="1"> <30
+					<option value="2"> 31-50
+					<option value="3"> >50
+				</select>
+			</p>
+
+			<p>
+				Sono interessato a ricevere:
+				Pubblicità<input type="checkbox" id="Check1" onclick="ChangeLast(this.checked)"/>
+				Newsletter<input type="checkbox" id="Check2" onclick="ChangeLast(this.checked)"/>
+				Offerte promozionali<input type="checkbox" id="Check3" onclick="ChangeLast(this.checked)"/>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				Seleziona tutto<input type="checkbox" id="Check4" onclick="ChangeAll()"/>
+			</p>
+
+			<h2>DATI RELATIVI ALLA CASELLA DI POSTA</h2>
+			<p>
+				Username <span style="color:red">*</span> (<span style="font-weight:bold;">minimo 5 caratteri</span>): <input type="text"  id="userName"/>
+			</p>
+
+			<p>
+				Dominio <span style="color:red">*</span>:
+				<input type="radio" name="dominio" value="paleocapa.it" id="radio1" checked/>paleocapa.it
+				<input type="radio" name="dominio" value="informatica.net" id="radio2"/>informatica.net
+				<input type="radio" name="dominio" value="sit.paleocapa.org" id="radio3"/>sit.paleocapa.org
+			</p>
+
+			<p>
+				Password (<span style="font-weight:bold;">minimo 8 caratteri</span>) <span style="color:red">*</span>:
+				<input type="password" id="pass"/>
+			</p>
+
+			<p>
+				Ripeti la password <span style="color:red">*</span>:
+				<input type="password" id="verificaPass"/>
+			</p>
+
+			<span>Domanda di sicureza</span>
+			<span style="color:red">*</span>
+			<span>
+				:
+				<select onchange="risposte(this.value)">
+					<option value="0">Quale è il nome della tua maestra delle elementari?</option>
+					<option value="1">Quale è il tuo film preferito?</option>
+					<option value="2">Quale è il nome del tuo animale omestico?</option>
+					<option value="3">Crea domanda personalizzata</option>
+				</select>
+			</span>
+
+			<p id="newQuestion" style="display: none;">
+				Domanda <span style="color:red">*</span>:
+				<input type="text" id="question" />
+			</p>
+
+			<p>
+				Risposta <span style="color:red">*</span>:
+				<input type="text" id="risposta" />
+			</p>
+
+			<h2>AUTORIZZAZIONE RELATIVA ALLA PRIVACY</h2>
+			<p>
+				Autorizzo al trattamento delle informazioni <span style="color:red">*</span>:
+				Sì <input type="radio" name="autorizzazione" />
+				No <input type="radio"checked  name="autorizzazione" id="no"/>
+			</p>
+
+
+			<p>
+				<input type="button" value="INVIA" onclick="Controllo()"/>
+			</p>
+			
+			<div id="resoconto">
+			</div>
+		</p>
+	</body>
+</html>
