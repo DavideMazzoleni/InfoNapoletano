@@ -106,6 +106,14 @@
 				resoconto_errate += "Controllo password errato" + "\n";
 
 			let answare = document.getElementById("risposta");
+			let domanda = document.getElementById("question");
+			let select = document.getElementById("sel");
+			
+			if(!domanda.value && sel.value == "3")
+				resoconto_errate += "Inserire la domanda\n";
+				
+			if(domanda.value && sel.value == "3")
+				resoconto_corrette += "La domada inserita è " + domanda.value + "\n";
 
 			if(!answare.value) {
 				resoconto_errate += "Inserire la risposta\n";
@@ -234,7 +242,7 @@
 			<span style="color:red">*</span>
 			<span>
 				:
-				<select onchange="risposte(this.value)">
+				<select onchange="risposte(this.value)" id="sel">
 					<option value="0">Quale è il nome della tua maestra delle elementari?</option>
 					<option value="1">Quale è il tuo film preferito?</option>
 					<option value="2">Quale è il nome del tuo animale omestico?</option>
